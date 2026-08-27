@@ -99,10 +99,12 @@
      ============================================ */
   var recordData = {
     quiz: [
-      { title: 'Quiz 1', meta: '18/20 pts', image: 'Quiz 1.png', alt: 'Quiz 1 result screenshot' }
+      { title: 'Quiz 1', meta: '18/20 pts', file: 'Quiz 1.png', alt: 'Quiz 1 result screenshot' }
     ],
     exam: [],
-    lab: []
+    lab: [
+      { title: 'Lab 1', meta: 'Click to Download the File', file: 'Macarayon_Lab1.pdf', bg: 'lab1-cover.png', alt: 'Lab 1 Activity' }
+    ]
   };
 
   var wipCopy = {
@@ -125,14 +127,46 @@
     var track = document.createElement('div');
     track.className = 'carousel-track';
 
+    // File extensions that should show as a downloadable attachment card
+    // instead of being rendered as an <img>.
+    var fileExts = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'txt'];
+
+    function isDownloadableFile(src) {
+      var ext = (src.split('.').pop() || '').toLowerCase();
+      return fileExts.indexOf(ext) !== -1;
+    }
+
     items.forEach(function (item) {
       var slide = document.createElement('div');
       slide.className = 'carousel-slide';
-      slide.innerHTML =
-        '<div class="record-card">' +
-          '<img src="' + item.image + '" alt="' + item.alt + '" loading="lazy">' +
-          '<div class="record-caption"><strong>' + item.title + '</strong><span>' + item.meta + '</span></div>' +
-        '</div>';
+
+      if (isDownloadableFile(item.file)) {
+        var ext = item.file.split('.').pop().toUpperCase();
+        // Optional: set item.bg (in recordData) to a path/URL for a blurred
+        // background image behind the card. If omitted, a plain surface color is used.
+        var bgLayer = item.bg
+          ? '<div class="file-bg" style="background-image:url(\'' + item.bg + '\')"></div>'
+          : '';
+        slide.innerHTML =
+          '<a class="record-card record-file" href="' + item.file + '" download>' +
+            bgLayer +
+            '<div class="file-content">' +
+              '<div class="file-icon">' + ext + '</div>' +
+              '<div class="record-caption"><strong>' + item.title + '</strong><span>' + item.meta + '</span></div>' +
+              '<span class="file-download-hint">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>' +
+                'Download' +
+              '</span>' +
+            '</div>' +
+          '</a>';
+      } else {
+        slide.innerHTML =
+          '<div class="record-card">' +
+            '<img src="' + item.file + '" alt="' + item.alt + '" loading="lazy">' +
+            '<div class="record-caption"><strong>' + item.title + '</strong><span>' + item.meta + '</span></div>' +
+          '</div>';
+      }
+
       track.appendChild(slide);
     });
 
