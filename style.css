@@ -486,6 +486,34 @@ section.hero {
   gap: 10px;
   font-size: 14px;
   font-weight: 600;
+  color: inherit;
+  /* reset in case this is a <button> (email) instead of an <a> (facebook) */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+}
+
+.contact-item:hover {
+  color: var(--accent);
+}
+
+.contact-item .contact-text {
+  min-width: 1ch; /* avoids layout jump when text swaps to "Copied!" */
+}
+
+.contact-email.is-copied {
+  color: var(--accent);
+}
+
+.contact-email.is-copied .icon {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-color: var(--accent);
 }
 
 .contact-item .icon {
@@ -497,6 +525,7 @@ section.hero {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
 }
 .contact-item .icon svg { width: 16px; height: 16px; }
 
@@ -603,7 +632,8 @@ section.hero {
   z-index: 0;
 }
 
-/* Tint over the blurred image so the icon/text stay readable in both themes */
+/* Tint over the blurred image so the icon/text stay readable in both themes.
+   This is the safety-net default while JS is still sampling the image. */
 .record-card.record-file .file-bg::after {
   content: "";
   position: absolute;
@@ -656,6 +686,31 @@ section.hero {
 .record-card.record-file .file-download-hint svg {
   width: 14px;
   height: 14px;
+}
+
+/* ---- Auto-contrast: JS samples item.bg's brightness and adds one of these
+   classes to the card, overriding the theme-based text colors above so the
+   caption stays legible no matter what the background image looks like. ---- */
+.record-card.record-file.bg-dark .record-caption strong,
+.record-card.record-file.bg-dark .record-caption span {
+  color: #FFFFFF;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+}
+
+.record-card.record-file.bg-dark .file-download-hint {
+  color: #FFFFFF;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+}
+
+.record-card.record-file.bg-light .record-caption strong,
+.record-card.record-file.bg-light .record-caption span {
+  color: #1A1714;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.65);
+}
+
+.record-card.record-file.bg-light .file-download-hint {
+  color: #1A1714;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.65);
 }
 
 /* WIP slide */
