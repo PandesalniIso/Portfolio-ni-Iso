@@ -26,6 +26,42 @@
   reflectToggle();
 
   /* ============================================
+     COPY EMAIL TO CLIPBOARD
+     ============================================ */
+  var copyEmailBtn = document.getElementById('copyEmail');
+  if (copyEmailBtn) {
+    copyEmailBtn.addEventListener('click', function () {
+      var email = copyEmailBtn.dataset.email;
+
+      function showCopied() {
+        copyEmailBtn.classList.add('is-copied');
+        var textEl = copyEmailBtn.querySelector('.contact-text');
+        var original = textEl.textContent;
+        textEl.textContent = 'Copied!';
+        setTimeout(function () {
+          textEl.textContent = original;
+          copyEmailBtn.classList.remove('is-copied');
+        }, 1500);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(showCopied);
+      } else {
+        // Fallback for older/unsupported browsers
+        var temp = document.createElement('textarea');
+        temp.value = email;
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0';
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(temp);
+        showCopied();
+      }
+    });
+  }
+
+  /* ============================================
      STICKY NAV SHADOW ON SCROLL
      + clear all nav highlights when back near the top
      ============================================ */
@@ -103,7 +139,7 @@
     ],
     exam: [],
     lab: [
-      { title: 'Lab 1', meta: 'Click to Download the File', file: 'Macarayon_Lab1.pdf', bg: 'lab1-cover.png', alt: 'Lab 1 Activity' }
+      { title: 'Lab 1', meta: 'Click here to download the file', file: 'Macarayon_Lab1.pdf', bg: 'lab1-cover.png', alt: 'Lab 1 Activity' }
     ]
   };
 
@@ -136,6 +172,36 @@
       return fileExts.indexOf(ext) !== -1;
     }
 
+    // Samples a background image's average brightness so the caption text
+    // can automatically switch to a light or dark, always-legible variant —
+    // regardless of what's underneath the blur or which theme is active.
+    function applyAutoContrast(imgSrc, cardEl) {
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function () {
+        try {
+          var canvas = document.createElement('canvas');
+          var size = 16; // downscale for a fast, cheap average
+          canvas.width = size;
+          canvas.height = size;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, size, size);
+          var data = ctx.getImageData(0, 0, size, size).data;
+          var total = 0;
+          for (var i = 0; i < data.length; i += 4) {
+            // perceived luminance
+            total += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+          }
+          var avg = total / (data.length / 4);
+          cardEl.classList.add(avg < 130 ? 'bg-dark' : 'bg-light');
+        } catch (err) {
+          // Canvas read can fail (e.g. cross-origin image without CORS headers) —
+          // silently keep the default theme-based text color in that case.
+        }
+      };
+      img.src = imgSrc;
+    }
+
     items.forEach(function (item) {
       var slide = document.createElement('div');
       slide.className = 'carousel-slide';
@@ -159,6 +225,10 @@
               '</span>' +
             '</div>' +
           '</a>';
+
+        if (item.bg) {
+          applyAutoContrast(item.bg, slide.querySelector('.record-file'));
+        }
       } else {
         slide.innerHTML =
           '<div class="record-card">' +
