@@ -1,7 +1,7 @@
 /* ============================================
    FONTS
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Yellowtail&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Yellowtail&family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 /* ============================================
    TOKENS
@@ -591,19 +591,38 @@ section.hero {
 
 .record-card .record-caption {
   padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* title | topic (centered) | score — topic stays centered even when blank */
   align-items: center;
   gap: 12px;
 }
 
 .record-card .record-caption strong {
   font-size: 15px;
+  font-weight: 800; /* Bold */
+  justify-self: start;
 }
 
-.record-card .record-caption span {
+.record-card .record-caption .record-topic {
   font-size: 13px;
   color: var(--text-muted);
+  font-weight: 800; /* Medium */
+  justify-self: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.record-card .record-caption .record-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 300; /* Light */
+  justify-self: end;
+}
+
+/* Exam screenshots (2407 x 1010) — show the full image, no cropping */
+.record-card.is-exam img {
+  height: auto;
+  aspect-ratio: 2407 / 1010;
 }
 
 /* Downloadable file card (e.g. PDF attachments) */
@@ -666,10 +685,16 @@ section.hero {
 }
 
 .record-card.record-file .record-caption {
+  display: flex; /* overrides the grid layout used by image-based (quiz/exam) cards above */
   flex-direction: column;
   gap: 2px;
   padding: 0 16px;
   text-align: center;
+}
+
+.record-card.record-file .record-caption span {
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .record-card.record-file .file-download-hint {
@@ -726,6 +751,12 @@ section.hero {
     repeating-linear-gradient(135deg, transparent 0 14px, var(--border) 14px 15px),
     var(--bg);
   border: 2px dashed var(--border);
+}
+
+/* Exam WIP slide: stretch to match the height of the exam card beside it */
+.record-card.wip.is-exam {
+  height: 100%;
+  min-height: 240px;
 }
 
 .record-card.wip .wip-dots {
