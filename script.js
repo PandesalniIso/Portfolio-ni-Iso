@@ -135,12 +135,18 @@
      ============================================ */
   var recordData = {
     quiz: [
-      { title: 'Quiz 1', meta: '18/20 pts', file: 'Quiz 1.png', alt: 'Quiz 1 result screenshot' }
+      { title: 'Quiz 1', meta: '18/20 pts', file: 'Quiz 1.png', alt: 'Quiz 1 result screenshot' },
+      { title: 'Quiz 2', topic: 'Virtualization Concepts', meta: '19/20 pts', file: 'Quiz 2.png', alt: 'Quiz 2 result screenshot' },
+      { title: 'Quiz 3', topic: 'Virtual Machine Implementation', meta: '19/20 pts', file: 'Quiz 3.png', alt: 'Quiz 3 result screenshot' },
+      { title: 'Prelim Long Quiz', topic: 'Comprehensive Cloud Computing', meta: '39/40 pts', file: 'Long Quiz - Prelims.png', alt: 'Long Quiz - Prelims result screenshot' }
     ],
-    exam: [],
+    exam: [
+      { title: 'Prelim Examination', meta: '68/70 pts', file: 'Prelim Exam.jpg', alt: 'Exam 1 result screenshot' }
+    ],
     lab: [
       { title: 'Lab 1', meta: 'Click here to download the file', file: 'Macarayon_Lab1.pdf', bg: 'lab1-cover.png', alt: 'Lab 1 Activity' },
-      { title: 'Lab 2', meta: 'Click here to download the file', file: 'Macarayon_Lab2.pdf', bg: 'lab2-cover.png', alt: 'Lab 2 Activity' }
+      { title: 'Lab 2', meta: 'Click here to download the file', file: 'Macarayon_Lab2.pdf', bg: 'lab2-cover.png', alt: 'Lab 2 Activity' },
+      { title: 'NETLAB', meta: 'Click here to download the file', file: 'Macarayon_NETLAB.pdf', bg: 'Netlab.png', alt: 'Lab 2 Activity' }
     ]
   };
 
@@ -232,9 +238,13 @@
         }
       } else {
         slide.innerHTML =
-          '<div class="record-card">' +
+          '<div class="record-card' + (key === 'exam' ? ' is-exam' : '') + '">' +
             '<img src="' + item.file + '" alt="' + item.alt + '" loading="lazy">' +
-            '<div class="record-caption"><strong>' + item.title + '</strong><span>' + item.meta + '</span></div>' +
+            '<div class="record-caption">' +
+              '<strong>' + item.title + '</strong>' +
+              '<span class="record-topic">' + (item.topic || '') + '</span>' +
+              '<span class="record-meta">' + item.meta + '</span>' +
+            '</div>' +
           '</div>';
       }
 
@@ -245,7 +255,7 @@
     var wipSlide = document.createElement('div');
     wipSlide.className = 'carousel-slide';
     wipSlide.innerHTML =
-      '<div class="record-card wip">' +
+      '<div class="record-card wip' + (key === 'exam' ? ' is-exam' : '') + '">' +
         '<div class="wip-dots"><span></span><span></span><span></span></div>' +
         '<strong>More to come</strong>' +
         '<span>' + (wipCopy[key] || 'More items will be added here soon.') + '</span>' +
