@@ -146,7 +146,7 @@
     lab: [
       { title: 'Lab 1', meta: 'Click here to download the file', file: 'Macarayon_Lab1.pdf', bg: 'lab1-cover.png', alt: 'Lab 1 Activity' },
       { title: 'Lab 2', meta: 'Click here to download the file', file: 'Macarayon_Lab2.pdf', bg: 'lab2-cover.png', alt: 'Lab 2 Activity' },
-      { title: 'NETLAB', meta: 'Click here to download the file', file: 'Macarayon_NETLAB.pdf', bg: 'Netlab.png', alt: 'Lab 2 Activity' }
+      { title: 'NETLAB', meta: 'Click here to download the file', file: 'Macarayon_NETLAB.pdf', bg: 'NetLab.png', alt: 'Lab 2 Activity' }
     ]
   };
 
