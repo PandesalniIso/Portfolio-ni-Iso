@@ -135,7 +135,7 @@
      ============================================ */
   var recordData = {
     quiz: [
-      { title: 'Quiz 1', meta: '18/20 pts', file: 'Quiz 1.png', alt: 'Quiz 1 result screenshot' },
+      { title: 'Quiz 1', topic: 'Introduction to Cloud Computing', meta: '18/20 pts', file: 'Quiz 1.png', alt: 'Quiz 1 result screenshot' },
       { title: 'Quiz 2', topic: 'Virtualization Concepts', meta: '19/20 pts', file: 'Quiz 2.png', alt: 'Quiz 2 result screenshot' },
       { title: 'Quiz 3', topic: 'Virtual Machine Implementation', meta: '19/20 pts', file: 'Quiz 3.png', alt: 'Quiz 3 result screenshot' },
       { title: 'Prelim Long Quiz', topic: 'Comprehensive Cloud Computing', meta: '39/40 pts', file: 'Long Quiz - Prelims.png', alt: 'Long Quiz - Prelims result screenshot' }
